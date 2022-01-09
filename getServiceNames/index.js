@@ -1,56 +1,37 @@
-const axios = require("axios");
+const serviceNames = require("./serviceNames");
 const utilities = require("./utilities");
 
 const APIKEY = process.env.APIKEY;
 
-/*
-  getServiceNames
-  Inputs: None
-  Returns: AWS Service Names (JSON Array)
-*/
-
-const getServiceNames = async () => {
-  // initialize app object for import and service names
-  let app = {};
-  let serviceNames = [];
-
-  try {
-    // get policy data from AWS S3 location
-    const policiesData = await axios.get(
-      "https://awspolicygen.s3.amazonaws.com/js/policies.js",
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
-
-    // add the JSON data to the app object
-    eval(policiesData.data);
-
-    // process the app data to get the service names
-    for (const service in app.PolicyEditorConfig.serviceMap) {
-      serviceNames.push(
-        app.PolicyEditorConfig.serviceMap[service]["StringPrefix"]
-      );
-    }
-  } catch (err) {}
-
-  return serviceNames.sort();
-};
-
 module.exports.handler = async (event) => {
   try {
-    const apiKey = event.headers["api-key"] ?? "";
-    if (apiKey != APIKEY) {
+    // validate api-key header, if error return 403
+    if (!("api-key" in event.headers)) {
+      return utilities.returnError(403, "Not Authorized.");
+    }
+    if (event.headers["api-key"] != APIKEY) {
       return utilities.returnError(403, "Not Authorized.");
     }
 
-    const serviceNames = await getServiceNames();
-    return utilities.returnResults(serviceNames);
+    // get return type (optional, defaults to service list)
+    let returnType = serviceNames.SERVICE_LIST;
+    if ("returnType" in event.queryStringParameters) {
+      returnType = event.queryStringParameters.returnType;
+    }
+
+    // get service names, if error return 400
+    const names = await serviceNames.getServiceNames(returnType);
+    if (!names) {
+      return utilities.returnError(
+        400,
+        "Service Names could not be found or invalid return type provided."
+      );
+    }
+
+    // return service names
+    return utilities.returnResults(names);
   } catch (err) {
-    return utilities.returnError(403, "Not Authorized.");
+    // return 400
+    return utilities.returnError(400, "Service Names not found.");
   }
 };
-
-names = getServiceNames();
