@@ -1,11 +1,7 @@
-const serviceNames = require("../getServiceNames/serviceNames");
-
-// (async function () {
-//   const actions = await serviceNames.getServiceNames();
-//   console.log(actions);
-// })();
+const getServiceNames = require("../getServiceNames/index");
+const { event } = require("../event.serviceNames");
 
 (async function () {
-  const actions = await serviceNames.getServiceNames("SERVICE_OBJECT");
-  console.log(actions);
+  const results = await getServiceNames.handler(event);
+  console.log(results);
 })();

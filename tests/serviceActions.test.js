@@ -1,6 +1,7 @@
-const serviceActions = require("../getServiceActions/serviceActions");
+const getServiceActions = require("../getServiceActions/index");
+const { event } = require("../event.serviceActions");
 
 (async function () {
-  const actions = await serviceActions.getServiceActions("dms");
-  console.log(actions);
+  const results = await getServiceActions.handler(event);
+  console.log(results);
 })();

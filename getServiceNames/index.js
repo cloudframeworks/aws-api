@@ -6,6 +6,7 @@ const APIKEY = process.env.APIKEY;
 module.exports.handler = async (event) => {
   try {
     // validate api-key header, if error return 403
+    const apiKey = event.headers;
     if (!("api-key" in event.headers)) {
       return utilities.returnError(403, "Not Authorized.");
     }
@@ -15,7 +16,10 @@ module.exports.handler = async (event) => {
 
     // get return type (optional, defaults to service list)
     let returnType = serviceNames.SERVICE_LIST;
-    if ("returnType" in event.queryStringParameters) {
+    if (
+      "queryStringParameters" in event &&
+      "returnType" in event.queryStringParameters
+    ) {
       returnType = event.queryStringParameters.returnType;
     }
 

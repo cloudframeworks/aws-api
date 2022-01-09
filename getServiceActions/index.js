@@ -15,6 +15,14 @@ module.exports.handler = async (event) => {
     }
 
     // get name, if not provided, return 400
+    if (
+      !(
+        "queryStringParameters" in event &&
+        "name" in event.queryStringParameters
+      )
+    ) {
+      return utilities.returnError(400, "Service Name invalid.");
+    }
     const name = event.queryStringParameters.name;
     if (name == "") {
       return utilities.returnError(400, "Service Name invalid.");
