@@ -14,3 +14,11 @@ Terraform template for implementing the API, Lambda functions and associated IAM
 - Converted from looping through objects to using mapping and filtering.
 - Added support for returning service name list only (short names) or service name object (full name and short name).
 - Moved AWS API calls to separate modules and added 10 second timeout for call.
+
+# TESTING
+
+```
+# set APIKEY environment variable using .env file
+cd /tests
+npm test
+```
