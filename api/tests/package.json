@@ -1,0 +1,11 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serviceActions.test.js",
+  "scripts": {
+    "test": "node serviceNames.test.js && node serviceActions.test.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
