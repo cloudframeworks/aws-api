@@ -17,8 +17,21 @@ Terraform template for implementing the API, Lambda functions and associated IAM
 
 # TESTING
 
+In each api function folder, run the following command to install dependencies:
+
 ```
-# set APIKEY environment variable using .env file
+cd /api/getServiceNames
+npm install
+cd ../getServiceActions
+npm install
+```
+
+In the tests folder:
+
+- set APIKEY environment variable using the .env file command
+- run the following commands to run the tests:
+
+```
 cd /tests
 npm test
 ```
