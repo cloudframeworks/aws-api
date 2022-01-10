@@ -17,7 +17,7 @@ Terraform template for implementing the API, Lambda functions and associated IAM
 
 # TESTING
 
-In each api function folder, run the following command to install dependencies:
+Run the following commands to install dependencies for each api function:
 
 ```
 cd /api/getServiceNames
